@@ -55,7 +55,6 @@ class Player(CircleShape):
     
     # player shoots
     def shoot(self):
-        print(f"{self.shoot_cooldown}")
         # check if the player can shoot
         if self.shoot_cooldown > 0:
             return
