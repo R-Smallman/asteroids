@@ -9,6 +9,15 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.shoot_cooldown = 0
+        # audio channels
+        self.player_shoot_ch = pygame.mixer.Channel(1)
+        self.player_move_ch = pygame.mixer.Channel(2)
+        # moving : audio sfx
+        self.spaceship_moving_sfx = pygame.mixer.Sound("assets/soundfx/spaceship-engine.wav")
+        self.spaceship_moving_sfx.set_volume(0.3)
+        # shooting : audio sfx
+        self.player_shoot_sfx = pygame.mixer.Sound("assets/soundfx/player-shoot.wav")
+        self.player_shoot_sfx.set_volume(0.3)
     
     # in the player class
     def triangle(self):
@@ -21,7 +30,7 @@ class Player(CircleShape):
     
     # draw the player
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+        pygame.draw.polygon(screen, "green", self.triangle(), 2)
     
     # rotate the player
     def rotate(self, dt):
@@ -41,12 +50,18 @@ class Player(CircleShape):
         # move forward
         if keys[pygame.K_w]:
             self.move(dt)
+            # audio
+            if not self.player_move_ch.get_busy():
+                self.player_move_ch.play(self.spaceship_moving_sfx)
         # move backward
         if keys[pygame.K_s]:
             self.move(-dt)
         # shoot
         if keys[pygame.K_SPACE]:
             self.shoot()
+        
+        if not keys[pygame.K_w]:
+            self.player_move_ch.fadeout(100)
     
     # move the player
     def move(self, dt):
@@ -64,4 +79,8 @@ class Player(CircleShape):
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED        
         # increment the cooldown
         self.shoot_cooldown += PLAYER_SHOOT_COOLDOWN
+        
+        # audio
+        self.player_shoot_ch.play(self.player_shoot_sfx)
+
         
