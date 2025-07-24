@@ -53,7 +53,7 @@ class Player(CircleShape):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
     
-
+    # player shoots
     def shoot(self):
         print(f"{self.shoot_cooldown}")
         # check if the player can shoot
