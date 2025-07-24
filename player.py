@@ -8,7 +8,7 @@ class Player(CircleShape):
     def __init__(self, x, y, PLAYER_RADIUS):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
-        self.shoot_cooldown = 0
+        self.shoot_cooldown = PLAYER_SHOOT_COOLDOWN
         # audio channels
         self.player_shoot_ch = pygame.mixer.Channel(1)
         self.player_move_ch = pygame.mixer.Channel(2)
@@ -39,7 +39,8 @@ class Player(CircleShape):
     # update the player
     def update(self, dt):
         # update cooldown
-        self.shoot_cooldown -= dt
+        if self.shoot_cooldown > 0:
+            self.shoot_cooldown -= dt
         keys = pygame.key.get_pressed()
         # rotate left
         if keys[pygame.K_a]:
