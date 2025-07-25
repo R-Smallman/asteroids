@@ -18,6 +18,9 @@ class Player(CircleShape):
         # shooting : audio sfx
         self.player_shoot_sfx = pygame.mixer.Sound("assets/soundfx/player-shoot.wav")
         self.player_shoot_sfx.set_volume(0.3)
+
+        # lives
+        self.lives = 3
     
     # in the player class
     def triangle(self):

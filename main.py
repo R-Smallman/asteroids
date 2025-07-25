@@ -11,7 +11,7 @@ from shot import Shot
 # === Functions ===
 def main():
     # === Startup ===
-    background_music_ch.play(background_music_fi, loops=-1)
+    background_music_ch.play(background_music_fi, loops=-1) # start background music
 
     updatables = pygame.sprite.Group() # create group
     drawables = pygame.sprite.Group() # create group
@@ -35,7 +35,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT: # enable quit button
                 # exit game
-                return
+                exit()
         
         screen.fill("black") # fill
         
@@ -44,20 +44,28 @@ def main():
         remove_these_shots = set()
         remove_these_asteroids = set()
 
-        # check for collisions between asteroids, players and shots
-        for asteroid in asteroids:
-            # if asteroid collides with player
-            if asteroid.collision(player):
-                
-                centered_text("Game Over!", gameover_font, (255, 0, 0), x, y)  # display text
-                pygame.display.flip() # render
-                
-                centered_text_sfx = pygame.mixer.Sound("assets/soundfx/game-over.wav")
-                background_music_ch.play(centered_text_sfx) # replace background music with gameover soundfx
-                while background_music_ch.get_busy(): # when gameover soundfx is finished; end the game
-                    continue
+        
+        for asteroid in asteroids: # check for collisions between asteroids, players and shots
+            
+            if asteroid.collision(player): # if asteroid collides with player
 
-                return # exit game
+                player.lives -= 1 # remove one life
+
+                if player.lives == 0: # if no lives remaining
+                    
+                    centered_text("Game Over!", gameover_font, (255, 0, 0), x, y)  # display text
+                    pygame.display.flip() # render
+                    
+                    centered_text_sfx = pygame.mixer.Sound("assets/soundfx/game-over.wav")
+                    background_music_ch.play(centered_text_sfx) # replace background music with gameover soundfx
+                    while background_music_ch.get_busy(): # when gameover soundfx is finished; end the game
+                        continue
+
+                    return # exit game
+                
+                else:
+                    player.position.x = SCREEN_WIDTH / 2
+                    player.position.y = SCREEN_HEIGHT / 2
             
             for shot in shots:
                 if asteroid.collision(shot): # if shot collides with asteroid
@@ -74,7 +82,15 @@ def main():
         for drawable in drawables:
             drawable.draw(screen) # draw game state
         
-        scoreboard(f"Score: {int(score)}", score_font, (255, 255, 255), 0, 0) # display scoreboard
+        score_text = f"Score: {int(score)} |" # display score
+        lives_text = f"Lives: {player.lives}" # display lives
+
+        lives_img = font.render(lives_text, True, (0, 255, 0)) # create img
+        score_img = font.render(score_text, True, (255,255,0)) # create img
+
+        screen.blit(score_img, (10, 10)) # position img
+        screen.blit(lives_img, (score_img.get_width() + 20, 10)) # position img
+
         pygame.display.flip() # render
 
         dt = clock.tick(60) / 1000 # get time since last frame
@@ -133,7 +149,7 @@ if __name__ == "__main__":
 
     # font
     gameover_font = pygame.font.SysFont("Arial", 72)
-    score_font = pygame.font.SysFont("Arial", 30)
+    font = pygame.font.SysFont("Arial", 30)
     player_name_font = pygame.font.SysFont("Arial", 30)
 
     # fps management

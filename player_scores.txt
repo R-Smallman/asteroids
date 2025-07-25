@@ -24,3 +24,14 @@ player: ddwd | score: 11368.139999999634
 player: ddwd | score: 2491.3100000000168
 player: jwidi | score: 624.8299999999977
 player: www | score: 57.18999999999955
+player: Josdh | score: 3649.7199999999375
+player: jbsibdi | score: 1983.6300000000133
+player: jbsibdi | score: 1253.2300000000039
+player: jbsibdi | score: 9472.09999999975
+player: sdd | score: 82.90999999999909
+player: wwdwd | score: 583.039999999999
+player: dwadwd | score: 96.37999999999882
+player: wdawdff | score: 86.49999999999903
+player: wdad | score: 1133.7300000000123
+player: wdawd | score: 93.01999999999893
+player: dwd | score: 1506.720000000033
