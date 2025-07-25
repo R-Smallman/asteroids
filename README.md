@@ -2,8 +2,10 @@
 A basic game with personal additions; from the guided course on Boot.dev : "Build Asteroids using Python and Pygame"
 
 ## how to play!
-- pilot the spaceship (wasd) to avoid asteroids ; surviving accumulates points slowly
+- pilot the spaceship (wasd) to avoid asteroids (white circles) ; surviving accumulates points slowly
 - shoot asteroids (spacebar) to accumulate points quickly
+- crashing into an asteroid will lose a life (maximum 3 lives)
+- regain lives by picking up health packs! (green circles)
 
 ## sfx and music:
 
