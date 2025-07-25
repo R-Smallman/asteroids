@@ -42,8 +42,9 @@ class Player(CircleShape):
     # update the player
     def update(self, dt):
         # update cooldown
-        if self.shoot_cooldown > 0:
-            self.shoot_cooldown -= dt
+        if self.shoot_cooldown > 0: # if on cooldown
+            self.shoot_cooldown -= dt # reduce cooldown
+
         keys = pygame.key.get_pressed()
         # rotate left
         if keys[pygame.K_a]:
@@ -74,17 +75,14 @@ class Player(CircleShape):
     
     # player shoots
     def shoot(self):
-        # check if the player can shoot
-        if self.shoot_cooldown > 0:
-            return
-        # create a new shot
-        shot = Shot(self.position.x, self.position.y, SHOT_RADIUS)
-        # set the shot's velocity
-        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED        
-        # increment the cooldown
-        self.shoot_cooldown += PLAYER_SHOOT_COOLDOWN
+        if self.shoot_cooldown > 0: # if during cooldown
+            return # player can't shoot
+
+        shot = Shot(self.position.x, self.position.y, SHOT_RADIUS) # create bullet
+        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED # set bullet velocity
+
+        self.shoot_cooldown = PLAYER_SHOOT_COOLDOWN # reset cooldown
         
-        # audio
-        self.player_shoot_ch.play(self.player_shoot_sfx)
+        self.player_shoot_ch.play(self.player_shoot_sfx) # play sfx
 
         

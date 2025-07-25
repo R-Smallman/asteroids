@@ -7,6 +7,7 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+from health_pack import Health_Pack
 
 # === Functions ===
 def main():
@@ -17,11 +18,13 @@ def main():
     drawables = pygame.sprite.Group() # create group
     asteroids = pygame.sprite.Group() # create group
     shots = pygame.sprite.Group() # create group
+    health_packs = pygame.sprite.Group() # create group
     
     Asteroid.containers = (asteroids, updatables, drawables) # add asteroids to groups
     AsteroidField.containers = updatables # add asteroid_field to group
     Player.containers = (updatables, drawables) # draw player
     Shot.containers = (shots, updatables, drawables) # draw shots
+    Health_Pack.containers = (health_packs, updatables, drawables) # draw health packs
 
     asteroid_field = AsteroidField() # create asteroid field
     player = Player(x, y, PLAYER_RADIUS) # create player
@@ -43,8 +46,8 @@ def main():
         
         remove_these_shots = set()
         remove_these_asteroids = set()
+        remove_these_health_packs = set()
 
-        
         for asteroid in asteroids: # check for collisions between asteroids, players and shots
             
             if asteroid.collision(player): # if asteroid collides with player
@@ -72,6 +75,17 @@ def main():
                     remove_these_shots.add(shot)
                     remove_these_asteroids.add(asteroid)
         
+        for health_pack in health_packs:
+
+            if health_pack.collision(player):
+                if player.lives < 3: # check if life at maximum (3)
+                    player.lives += 1 # add one life
+
+                remove_these_health_packs.add(health_pack)
+
+        for health_pack in remove_these_health_packs:
+            health_pack.kill() # remove health packs
+        
         for shot in remove_these_shots: 
             shot.kill() # remove shots
         
@@ -82,14 +96,16 @@ def main():
         for drawable in drawables:
             drawable.draw(screen) # draw game state
         
-        score_text = f"Score: {int(score)} |" # display score
+        score_text = f"Score: {int(score)}" # display score
         lives_text = f"Lives: {player.lives}" # display lives
 
         lives_img = font.render(lives_text, True, (0, 255, 0)) # create img
+        sph_img = font.render("|", True, (255,255,255), 0)
         score_img = font.render(score_text, True, (255,255,0)) # create img
 
         screen.blit(score_img, (10, 10)) # position img
-        screen.blit(lives_img, (score_img.get_width() + 20, 10)) # position img
+        screen.blit(sph_img, (score_img.get_width() + 15, 10))
+        screen.blit(lives_img, (score_img.get_width() + 30, 10)) # position img
 
         pygame.display.flip() # render
 
@@ -139,13 +155,15 @@ if __name__ == "__main__":
     pygame.init()
     pygame.mixer.init()
     pygame.font.init()
+
+    pygame.display.set_caption(f"Asteroids! : A Guided Course by Boot.dev (with additions by R-Smallman)")
     
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # create screen
     x, y = SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 # screen center coords
 
-    # background music channel
-    background_music_ch = pygame.mixer.Channel(0)
-    background_music_fi = pygame.mixer.Sound("assets/music/space-chase.wav")
+    background_music_ch = pygame.mixer.Channel(0) # create background music channel
+    background_music_fi = pygame.mixer.Sound("assets/music/space-chase.wav") # create background music
+    background_music_ch.set_volume(0.2)
 
     # font
     gameover_font = pygame.font.SysFont("Arial", 72)
