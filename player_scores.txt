@@ -20,3 +20,7 @@ player: ndibd | score: 51.12999999999966
 player: yeet | score: 94.28999999999941
 player: yeet | score: 55.059999999999654
 player: yayay | score: 1124.069999999994
+player: ddwd | score: 11368.139999999634
+player: ddwd | score: 2491.3100000000168
+player: jwidi | score: 624.8299999999977
+player: www | score: 57.18999999999955
