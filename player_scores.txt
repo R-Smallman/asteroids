@@ -52,3 +52,4 @@ player: d | score: 767.8199999999995
 player: dwd | score: 88.559999999999
 player:  w | score: 13495.089999999405
 player: wddf | score: 692.6899999999856
+player: GMan | score: 63490.6900000228
